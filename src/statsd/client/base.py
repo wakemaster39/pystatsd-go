@@ -131,7 +131,7 @@ class StatsClientBase:
             self._send(data + self._build_tags_suffix(simple_tags, kv_tags))
 
     def _build_tags_suffix(self, simple_tags: Optional[Iterable[str]], kv_tags: Optional[Dict[str, str]]) -> str:
-        stags = ",".join(chain((simple_tags or []), self._simple_tags))
+        stags = ",".join(set(chain((simple_tags or []), self._simple_tags)))
 
         kv_tags = kv_tags or {}
         for k, v in self._kv_tags.items():
