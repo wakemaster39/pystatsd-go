@@ -30,6 +30,88 @@ Quickly, to use:
 
 .. code-block:: pycon
 
+    >>> import statsdfrom src import statsd
+    >>> c = statsd.StatsClient('localhost', 8125)
+    >>> c.incr('foo')  # Increment the 'foo' counter.
+    >>> c.timing('stats.timed', 320)  # Record a 320ms 'stats.timed'.
+
+You can also add a prefix to all your stats:
+    >>> import statsdfrom src import statsd
+    >>> c = statsd.StatsClient('localhost', 8125)
+    >>> c.incr('foo')  # Increment the 'foo' counter.
+    >>> c.timing('stats.timed', 320)  # Record a 320ms 'stats.timed'.
+
+You can also add a prefix to all your stats:
+    >>> import statsd
+from src import statsd
+    >>> c = statsd.StatsClient('localhost', 8125)
+    >>> c.incr('foo')  # Increment the 'foo' counter.
+    >>> c.timing('stats.timed', 320)  # Record a 320ms 'stats.timed'.
+
+You can also add a prefix to all your stats:
+    >>> import statsd
+from src import statsd
+    >>> c = statsd.StatsClient('localhost', 8125)
+    >>> c.incr('foo')  # Increment the 'foo' counter.
+    >>> c.timing('stats.timed', 320)  # Record a 320ms 'stats.timed'.
+
+You can also add a prefix to all your stats:
+    >>> import statsd
+from src import statsd
+    >>> c = statsd.StatsClient('localhost', 8125)
+    >>> c.incr('foo')  # Increment the 'foo' counter.
+    >>> c.timing('stats.timed', 320)  # Record a 320ms 'stats.timed'.
+
+You can also add a prefix to all your stats:
+    >>> import statsd
+from src import statsd
+    >>> c = statsd.StatsClient('localhost', 8125)
+    >>> c.incr('foo')  # Increment the 'foo' counter.
+    >>> c.timing('stats.timed', 320)  # Record a 320ms 'stats.timed'.
+
+You can also add a prefix to all your stats:
+    >>>
+from src import statsd
+    >>> c = statsd.StatsClient('localhost', 8125)
+    >>> c.incr('foo')  # Increment the 'foo' counter.
+    >>> c.timing('stats.timed', 320)  # Record a 320ms 'stats.timed'.
+
+You can also add a prefix to all your stats:
+    >>>
+from src import statsd
+    >>> c = statsd.StatsClient('localhost', 8125)
+    >>> c.incr('foo')  # Increment the 'foo' counter.
+    >>> c.timing('stats.timed', 320)  # Record a 320ms 'stats.timed'.
+
+You can also add a prefix to all your stats:
+    >>>
+from src import statsd
+    >>> c = statsd.StatsClient('localhost', 8125)
+    >>> c.incr('foo')  # Increment the 'foo' counter.
+    >>> c.timing('stats.timed', 320)  # Record a 320ms 'stats.timed'.
+
+You can also add a prefix to all your stats:
+    >>>
+from src import statsd
+    >>> c = statsd.StatsClient('localhost', 8125)
+    >>> c.incr('foo')  # Increment the 'foo' counter.
+    >>> c.timing('stats.timed', 320)  # Record a 320ms 'stats.timed'.
+
+You can also add a prefix to all your stats:
+
+from src import statsd
+    >>> c = statsd.StatsClient('localhost', 8125)
+    >>> c.incr('foo')  # Increment the 'foo' counter.
+    >>> c.timing('stats.timed', 320)  # Record a 320ms 'stats.timed'.
+
+You can also add a prefix to all your stats:
+
+from src import statsd
+    >>> c = statsd.StatsClient('localhost', 8125)
+    >>> c.incr('foo')  # Increment the 'foo' counter.
+    >>> c.timing('stats.timed', 320)  # Record a 320ms 'stats.timed'.
+
+You can also add a prefix to all your stats:
     >>> import statsd
     >>> c = statsd.StatsClient('localhost', 8125)
     >>> c.incr('foo')  # Increment the 'foo' counter.
