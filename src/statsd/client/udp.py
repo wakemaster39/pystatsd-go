@@ -1,5 +1,5 @@
 import socket
-from typing import Optional
+from typing import Dict, Optional, Sequence
 
 from .base import PipelineBase, StatsClientBase
 
@@ -9,7 +9,7 @@ class Pipeline(PipelineBase):
         super().__init__(client)
         self._maxudpsize = client._maxudpsize
 
-    def _send(self) -> None:  # type: ignore
+    def _send(self, data: str = "") -> None:
         data = self._stats.popleft()
         while self._stats:
             # Use popleft to preserve the order of the stats.
@@ -32,6 +32,8 @@ class StatsClient(StatsClientBase):
         prefix: Optional[str] = None,
         maxudpsize: int = 512,
         ipv6: bool = False,
+        simple_tags: Optional[Sequence[str]] = None,
+        kv_tags: Optional[Dict[str, str]] = None,
     ):
         """Create a new client."""
         fam = socket.AF_INET6 if ipv6 else socket.AF_INET
@@ -39,6 +41,8 @@ class StatsClient(StatsClientBase):
         self._addr = addr
         self._sock = socket.socket(family, socket.SOCK_DGRAM)
         self._prefix = prefix
+        self._simple_tags = simple_tags or []
+        self._kv_tags = kv_tags or {}
         self._maxudpsize = maxudpsize
 
     def _send(self, data: str) -> None:

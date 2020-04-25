@@ -20,13 +20,22 @@ class Timer:
     _start_time: Optional[float]
     ms: Optional[float]
 
-    def __init__(self, client: "StatsClientBase", stat: str, rate: float = 1):
+    def __init__(
+        self,
+        client: "StatsClientBase",
+        stat: str,
+        rate: float = 1,
+        simple_tags: Optional[Iterable[str]] = None,
+        kv_tags: Optional[Dict[str, str]] = None,
+    ):
         self.client = client
         self.stat = stat
         self.rate = rate
         self.ms = None
         self._sent = False
         self._start_time = None
+        self._simple_tags = simple_tags or []
+        self._kv_tags = kv_tags or {}
 
     def __call__(self, f: Callable) -> Callable:
         """Thread-safe timing function decorator."""
@@ -38,7 +47,7 @@ class Timer:
                 return f(*args, **kwargs)
             finally:
                 elapsed_time_ms = 1000.0 * (perf_counter() - start_time)
-                self.client.timing(self.stat, elapsed_time_ms, self.rate)
+                self.client.timing(self.stat, elapsed_time_ms, self.rate, self._simple_tags, self._kv_tags)
 
         return _wrapped  # type: ignore
 

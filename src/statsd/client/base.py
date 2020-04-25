@@ -1,6 +1,7 @@
 import random
 from collections import deque
 from datetime import timedelta
+from itertools import chain
 from types import TracebackType
 from typing import Dict, Iterable, Optional, Sequence, Type, Union
 
@@ -9,7 +10,8 @@ from .timer import Timer
 
 class StatsClientBase:
     _prefix: Optional[str]
-    _suffix: Optional[str]
+    _simple_tags: Sequence[str]
+    _kv_tags: Dict[str, str]
     _maxudpsize: int
 
     """A Base class for various statsd clients."""
@@ -20,8 +22,14 @@ class StatsClientBase:
     def pipeline(self) -> "PipelineBase":
         raise NotImplementedError()
 
-    def timer(self, stat: str, rate: float = 1) -> Timer:
-        return Timer(self, stat, rate)
+    def timer(
+        self,
+        stat: str,
+        rate: float = 1,
+        simple_tags: Optional[Iterable[str]] = None,
+        kv_tags: Optional[Dict[str, str]] = None,
+    ) -> Timer:
+        return Timer(self, stat, rate, simple_tags, kv_tags)
 
     def timing(
         self,
@@ -123,9 +131,14 @@ class StatsClientBase:
             self._send(data + self._build_tags_suffix(simple_tags, kv_tags))
 
     def _build_tags_suffix(self, simple_tags: Optional[Iterable[str]], kv_tags: Optional[Dict[str, str]]) -> str:
-        stags = ",".join(simple_tags or []) if simple_tags else ""
-        kvtags = ",".join(f"{k}:{v}" for k, v in kv_tags.items()) if kv_tags else ""
-        tags = ",".join(x for x in (stags, kvtags) if x) + (self._suffix or "")
+        stags = ",".join(chain((simple_tags or []), self._simple_tags))
+
+        kv_tags = kv_tags or {}
+        for k, v in self._kv_tags.items():
+            kv_tags.setdefault(k, v)
+
+        kvtags = ",".join(f"{k}:{v}" for k, v in kv_tags.items())
+        tags = ",".join(x for x in (stags, kvtags) if x)
 
         return f"|#{tags}" if tags else ""
 
@@ -136,10 +149,11 @@ class PipelineBase(StatsClientBase):
     def __init__(self, client: StatsClientBase):
         self._client = client
         self._prefix = client._prefix
-        self._suffix = client._suffix
+        self._simple_tags = client._simple_tags
+        self._kv_tags = client._kv_tags
         self._stats = deque()
 
-    def _send(self) -> None:  # type: ignore
+    def _send(self, data: str = "") -> None:
         raise NotImplementedError()
 
     def _after(

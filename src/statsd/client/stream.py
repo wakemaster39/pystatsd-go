@@ -1,11 +1,11 @@
 import socket
-from typing import Optional
+from typing import Dict, Optional, Sequence
 
 from .base import PipelineBase, StatsClientBase
 
 
 class StreamPipeline(PipelineBase):
-    def _send(self) -> None:  # type: ignore
+    def _send(self, data: str = "") -> None:
         self._client._after("\n".join(self._stats), None, None)
         self._stats.clear()
 
@@ -46,9 +46,10 @@ class TCPStatsClient(StreamClientBase):
         host: str = "localhost",
         port: int = 8125,
         prefix: Optional[str] = None,
-        suffix: Optional[str] = None,
         timeout: int = None,
         ipv6: bool = False,
+        simple_tags: Optional[Sequence[str]] = None,
+        kv_tags: Optional[Dict[str, str]] = None,
     ):
         """Create a new client."""
         self._host = host
@@ -56,7 +57,8 @@ class TCPStatsClient(StreamClientBase):
         self._ipv6 = ipv6
         self._timeout = timeout
         self._prefix = prefix
-        self._suffix = suffix
+        self._simple_tags = simple_tags or []
+        self._kv_tags = kv_tags or {}
         self._sock = None
 
     def connect(self) -> None:
